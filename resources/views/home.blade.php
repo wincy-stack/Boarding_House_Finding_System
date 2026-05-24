@@ -364,7 +364,10 @@
         <ul class="nav-links">
             <li><a href="/" class="active">Home</a></li>
             <li><a href="/listings">Listings</a></li>
-            <li><a href="/rent">Rent</a></li>
+            <li><a href="/rent">Rentals</a></li>
+            <li><a href="/bookings">Bookings</a></li>
+            <li><a href="/tenants">Tenants</a></li>
+            <li><a href="/payments">Payments</a></li>
         </ul>
     </nav>
 

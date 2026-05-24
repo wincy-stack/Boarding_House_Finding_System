@@ -626,7 +626,10 @@
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/listings" class="active">Listings</a></li>
-            <li><a href="/rent">Rent</a></li>
+            <li><a href="/rent">Rentals</a></li>
+            <li><a href="/bookings">Bookings</a></li>
+            <li><a href="/tenants">Tenants</a></li>
+            <li><a href="/payments">Payments</a></li>
         </ul>
         <a href="{{ route('boarding-houses.create') }}" class="btn-list">
     +Add Boarding House
@@ -837,7 +840,7 @@
                 <h3>Rent Room</h3>
                 <button class="modal-close" onclick="closeRentModal()">&times;</button>
             </div>
-            <form id="rentForm" action="{{ route('rentals.store') }}" method="POST">
+            <form id="rentForm" action="{{ route('bookings.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="boarding_house_id" id="modal_boarding_house_id">
                 
@@ -869,9 +872,19 @@
                     <input type="text" name="tenant_contact" id="tenant_contact" placeholder="e.g. 09987654321">
                 </div>
 
+                <div class="modal-form-group">
+                    <label for="room_number">Requested Room / Bed Number</label>
+                    <input type="text" name="room_number" id="room_number" placeholder="e.g. Room 101, Bed A (optional)">
+                </div>
+
+                <div class="modal-form-group">
+                    <label for="notes">Inquiry Notes / Special Requests</label>
+                    <textarea name="notes" id="notes" placeholder="Tell the host about your stay (optional)" style="width: 100%; min-height: 80px; padding: 12px; border-radius: 10px; border: 1px solid #d1d5db; font-family: 'Manrope', sans-serif; font-size: 0.9rem; resize: vertical; box-sizing: border-box; margin-top: 4px;"></textarea>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-modal-cancel" onclick="closeRentModal()">Cancel</button>
-                    <button type="submit" class="btn-modal-submit">Confirm Rental</button>
+                    <button type="submit" class="btn-modal-submit">Submit Inquiry</button>
                 </div>
             </form>
         </div>

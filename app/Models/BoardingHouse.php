@@ -27,4 +27,14 @@ class BoardingHouse extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function tenants()
+    {
+        return $this->hasMany(Tenant::class);
+    }
 }

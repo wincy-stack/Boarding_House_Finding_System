@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent - BoardingPH</title>
+    <title>Bookings & Inquiries - BoardingPH</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -24,7 +24,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 60px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(10px);
         }
 
@@ -47,18 +47,20 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 36px;
+            gap: 24px;
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
         .nav-links a {
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding: 6px 12px;
+            border-radius: 50px;
         }
 
         .nav-links a:hover,
@@ -69,9 +71,8 @@
         .nav-links a.active {
             background: white;
             color: #111;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 8px 18px;
+            font-weight: 700;
         }
 
         .btn-list {
@@ -80,8 +81,8 @@
             padding: 10px 22px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             transition: background 0.2s;
         }
 
@@ -94,7 +95,7 @@
 
         /* ─── PAGE CONTAINER ─── */
         .page {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 120px 24px 60px;
         }
@@ -120,7 +121,7 @@
         /* ─── STATS CARDS ─── */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -146,11 +147,12 @@
             flex-shrink: 0;
         }
 
-        .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
         .stat-icon.green { background: rgba(34, 199, 122, 0.1); color: #22c77a; }
+        .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
 
         .stat-info { display: flex; flex-direction: column; }
-        .stat-label { font-size: 0.85rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-label { font-size: 0.82rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
         .stat-value { font-size: 1.8rem; font-weight: 800; color: #111827; margin: 4px 0 0; }
 
         /* ─── SECTION STYLING ─── */
@@ -201,7 +203,7 @@
         }
 
         .rentals-table td {
-            padding: 18px 24px;
+            padding: 20px 24px;
             font-size: 0.95rem;
             color: #111827;
             border-bottom: 1px solid #f3f4f6;
@@ -219,8 +221,7 @@
         }
 
         .tenant-name { font-weight: 800; color: #111827; }
-        .tenant-phone { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
-        .tenant-email { font-size: 0.82rem; color: #6b7280; font-weight: 500; }
+        .tenant-meta { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
 
         .house-info {
             display: flex;
@@ -240,10 +241,33 @@
             text-transform: uppercase;
             letter-spacing: 0.03em;
         }
-        .badge.active { background: #ecfdf5; color: #047857; }
-        .badge.ended { background: #f3f4f6; color: #4b5563; }
+        .badge.pending { background: #fef3c7; color: #d97706; }
+        .badge.approved { background: #d1fae5; color: #065f46; }
+        .badge.rejected { background: #fee2e2; color: #b91c1c; }
 
-        .btn-end-rental {
+        .btn-action-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-approve {
+            background: #22c77a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-approve:hover {
+            background: #1da862;
+        }
+
+        .btn-reject {
             background: #fee2e2;
             color: #ef4444;
             border: none;
@@ -256,7 +280,7 @@
             transition: all 0.2s ease;
         }
 
-        .btn-end-rental:hover {
+        .btn-reject:hover {
             background: #fca5a5;
             color: #b91c1c;
         }
@@ -298,8 +322,8 @@
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/listings">Listings</a></li>
-            <li><a href="/rent" class="active">Rentals</a></li>
-            <li><a href="/bookings">Bookings</a></li>
+            <li><a href="/rent">Rentals</a></li>
+            <li><a href="/bookings" class="active">Bookings</a></li>
             <li><a href="/tenants">Tenants</a></li>
             <li><a href="/payments">Payments</a></li>
         </ul>
@@ -310,8 +334,8 @@
 
     <div class="page">
         <div class="page-header">
-            <h1>Rental Records</h1>
-            <p>Monitor your active renters and past rental history.</p>
+            <h1>Bookings & Inquiries</h1>
+            <p>Manage pending inquiries, room requests, and view previous reservation history.</p>
         </div>
 
         @if(session('success'))
@@ -331,70 +355,89 @@
         {{-- Stats Grid --}}
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon blue">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div class="stat-icon orange">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Active Tenants</span>
-                    <h2 class="stat-value">{{ $totalActive }}</h2>
+                    <span class="stat-label">Pending Inquiries</span>
+                    <h2 class="stat-value">{{ $pendingBookings->count() }}</h2>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon green">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Monthly Value</span>
-                    <h2 class="stat-value">₱{{ number_format($monthlyRevenue, 0) }}</h2>
+                    <span class="stat-label">Approved Overall</span>
+                    <h2 class="stat-value">{{ $allBookings->where('status', 'approved')->count() }}</h2>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Rejected Overall</span>
+                    <h2 class="stat-value">{{ $allBookings->where('status', 'rejected')->count() }}</h2>
                 </div>
             </div>
         </div>
 
-        {{-- Active Rentals Section --}}
-        <h2 class="section-title">Active Rentals <span>{{ $activeRentals->count() }}</span></h2>
+        {{-- Pending Inquiries Section --}}
+        <h2 class="section-title">Pending Room Inquiries <span>{{ $pendingBookings->count() }}</span></h2>
         <div class="table-container">
-            @if($activeRentals->count() > 0)
+            @if($pendingBookings->count() > 0)
                 <table class="rentals-table">
                     <thead>
                         <tr>
-                            <th>Tenant Details</th>
+                            <th>Guest Details</th>
                             <th>Boarding House</th>
-                            <th>Monthly Rent</th>
-                            <th>Date Rented</th>
-                            <th>Action</th>
+                            <th>Requested Room</th>
+                            <th>Inquiry Notes</th>
+                            <th>Date Submitted</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($activeRentals as $rental)
+                        @foreach($pendingBookings as $booking)
                             <tr>
                                 <td>
                                     <div class="tenant-info">
-                                        <span class="tenant-name">{{ $rental->tenant_name }}</span>
-                                        @if($rental->tenant_email)
-                                            <span class="tenant-email">{{ $rental->tenant_email }}</span>
+                                        <span class="tenant-name">{{ $booking->tenant_name }}</span>
+                                        @if($booking->tenant_email)
+                                            <span class="tenant-meta">{{ $booking->tenant_email }}</span>
                                         @endif
-                                        @if($rental->tenant_contact)
-                                            <span class="tenant-phone">{{ $rental->tenant_contact }}</span>
+                                        @if($booking->tenant_contact)
+                                            <span class="tenant-meta">{{ $booking->tenant_contact }}</span>
                                         @endif
                                     </div>
                                 </td>
                                 <td>
                                     <div class="house-info">
-                                        <span class="house-name">{{ $rental->boardingHouse->name ?? 'Deleted House' }}</span>
-                                        <span class="house-loc">{{ $rental->boardingHouse->location ?? '' }}, {{ $rental->boardingHouse->city->name ?? '' }}</span>
+                                        <span class="house-name">{{ $booking->boardingHouse->name ?? 'Deleted House' }}</span>
+                                        <span class="house-loc">{{ $booking->boardingHouse->location ?? '' }}, {{ $booking->boardingHouse->city->name ?? '' }}</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <strong style="color: #111827; font-size: 1.05rem;">₱{{ number_format($rental->price_per_month, 0) }}/mo</strong>
+                                    <strong style="color: #4b5563;">{{ $booking->room_number ?? 'Any Available' }}</strong>
+                                </td>
+                                <td style="max-width: 250px; font-size: 0.88rem; color: #4b5563; line-height: 1.4;">
+                                    {{ $booking->notes ?? 'No notes provided.' }}
                                 </td>
                                 <td style="color: #4b5563; font-weight: 500;">
-                                    {{ $rental->rental_date ? $rental->rental_date->format('M d, Y h:i A') : '—' }}
+                                    {{ $booking->created_at->format('M d, Y h:i A') }}
                                 </td>
                                 <td>
-                                    <form action="{{ route('rentals.end', $rental->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to end this rental and release the bed?');">
-                                        @csrf
-                                        <button type="submit" class="btn-end-rental">End Rental</button>
-                                    </form>
+                                    <div class="btn-action-group">
+                                        <form action="{{ route('bookings.approve', $booking->id) }}" method="POST" onsubmit="return confirm('Approve this booking? This will create a Tenant and lock a bed.');">
+                                            @csrf
+                                            <button type="submit" class="btn-approve">Approve</button>
+                                        </form>
+                                        <form action="{{ route('bookings.reject', $booking->id) }}" method="POST" onsubmit="return confirm('Reject this booking request?');">
+                                            @csrf
+                                            <button type="submit" class="btn-reject">Reject</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -402,55 +445,59 @@
                 </table>
             @else
                 <div class="empty-state">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <h3>No active rentals</h3>
-                    <p>Rentals will appear here once a room listing is rented.</p>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <h3>No pending inquiries</h3>
+                    <p>New inquiries from guests booking rooms will appear here.</p>
                 </div>
             @endif
         </div>
 
-        {{-- Past Rentals Section --}}
-        <h2 class="section-title">Past History <span>{{ $pastRentals->count() }}</span></h2>
+        {{-- Processed Bookings History Section --}}
+        <h2 class="section-title">Inquiry History <span>{{ $allBookings->count() }}</span></h2>
         <div class="table-container">
-            @if($pastRentals->count() > 0)
+            @if($allBookings->count() > 0)
                 <table class="rentals-table">
                     <thead>
                         <tr>
-                            <th>Tenant Details</th>
+                            <th>Guest Details</th>
                             <th>Boarding House</th>
-                            <th>Rate</th>
-                            <th>Date Rented</th>
+                            <th>Room / Bed</th>
+                            <th>Inquiry Notes</th>
+                            <th>Processed Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pastRentals as $rental)
+                        @foreach($allBookings as $booking)
                             <tr>
                                 <td>
                                     <div class="tenant-info">
-                                        <span class="tenant-name">{{ $rental->tenant_name }}</span>
-                                        @if($rental->tenant_email)
-                                            <span class="tenant-email">{{ $rental->tenant_email }}</span>
+                                        <span class="tenant-name">{{ $booking->tenant_name }}</span>
+                                        @if($booking->tenant_email)
+                                            <span class="tenant-meta">{{ $booking->tenant_email }}</span>
                                         @endif
-                                        @if($rental->tenant_contact)
-                                            <span class="tenant-phone">{{ $rental->tenant_contact }}</span>
+                                        @if($booking->tenant_contact)
+                                            <span class="tenant-meta">{{ $booking->tenant_contact }}</span>
                                         @endif
                                     </div>
                                 </td>
                                 <td>
                                     <div class="house-info">
-                                        <span class="house-name">{{ $rental->boardingHouse->name ?? 'Deleted House' }}</span>
-                                        <span class="house-loc">{{ $rental->boardingHouse->location ?? '' }}, {{ $rental->boardingHouse->city->name ?? '' }}</span>
+                                        <span class="house-name">{{ $booking->boardingHouse->name ?? 'Deleted House' }}</span>
+                                        <span class="house-loc">{{ $booking->boardingHouse->location ?? '' }}, {{ $booking->boardingHouse->city->name ?? '' }}</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <span style="color: #6b7280; font-weight: 500;">₱{{ number_format($rental->price_per_month, 0) }}/mo</span>
+                                    <strong style="color: #6b7280;">{{ $booking->room_number ?? 'Any' }}</strong>
+                                </td>
+                                <td style="max-width: 250px; font-size: 0.88rem; color: #6b7280; line-height: 1.4;">
+                                    {{ $booking->notes ?? '—' }}
                                 </td>
                                 <td style="color: #6b7280; font-weight: 500;">
-                                    {{ $rental->rental_date ? $rental->rental_date->format('M d, Y') : '—' }}
+                                    {{ $booking->updated_at->format('M d, Y') }}
                                 </td>
                                 <td>
-                                    <span class="badge ended">Ended</span>
+                                    <span class="badge {{ $booking->status }}">{{ ucfirst($booking->status) }}</span>
                                 </td>
                             </tr>
                         @endforeach
@@ -458,9 +505,9 @@
                 </table>
             @else
                 <div class="empty-state">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <h3>No past records</h3>
-                    <p>Ended rental history will be archived here.</p>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <h3>No processed inquiries</h3>
+                    <p>Your processed history will show up here.</p>
                 </div>
             @endif
         </div>

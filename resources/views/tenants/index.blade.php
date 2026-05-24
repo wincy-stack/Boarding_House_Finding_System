@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent - BoardingPH</title>
+    <title>Tenants Directory - BoardingPH</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -24,7 +24,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px 60px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(10px);
         }
 
@@ -47,18 +47,20 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 36px;
+            gap: 24px;
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
         .nav-links a {
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding: 6px 12px;
+            border-radius: 50px;
         }
 
         .nav-links a:hover,
@@ -69,9 +71,8 @@
         .nav-links a.active {
             background: white;
             color: #111;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 8px 18px;
+            font-weight: 700;
         }
 
         .btn-list {
@@ -80,8 +81,8 @@
             padding: 10px 22px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             transition: background 0.2s;
         }
 
@@ -94,16 +95,21 @@
 
         /* ─── PAGE CONTAINER ─── */
         .page {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 120px 24px 60px;
         }
 
         .page-header {
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        .page-header h1 {
+        .page-header-text h1 {
             margin: 0 0 6px;
             font-size: 2.25rem;
             font-weight: 800;
@@ -111,16 +117,36 @@
             color: #111827;
         }
 
-        .page-header p {
+        .page-header-text p {
             margin: 0;
             color: #6b7280;
             font-size: 1.05rem;
         }
 
+        .btn-add-tenant {
+            background: linear-gradient(135deg, #22c77a 0%, #16a34a 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(34, 199, 122, 0.2);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-tenant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 199, 122, 0.3);
+        }
+
         /* ─── STATS CARDS ─── */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 24px;
             margin-bottom: 40px;
         }
@@ -150,7 +176,7 @@
         .stat-icon.green { background: rgba(34, 199, 122, 0.1); color: #22c77a; }
 
         .stat-info { display: flex; flex-direction: column; }
-        .stat-label { font-size: 0.85rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-label { font-size: 0.82rem; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
         .stat-value { font-size: 1.8rem; font-weight: 800; color: #111827; margin: 4px 0 0; }
 
         /* ─── SECTION STYLING ─── */
@@ -201,7 +227,7 @@
         }
 
         .rentals-table td {
-            padding: 18px 24px;
+            padding: 20px 24px;
             font-size: 0.95rem;
             color: #111827;
             border-bottom: 1px solid #f3f4f6;
@@ -219,8 +245,7 @@
         }
 
         .tenant-name { font-weight: 800; color: #111827; }
-        .tenant-phone { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
-        .tenant-email { font-size: 0.82rem; color: #6b7280; font-weight: 500; }
+        .tenant-meta { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
 
         .house-info {
             display: flex;
@@ -241,22 +266,81 @@
             letter-spacing: 0.03em;
         }
         .badge.active { background: #ecfdf5; color: #047857; }
-        .badge.ended { background: #f3f4f6; color: #4b5563; }
+        .badge.past { background: #f3f4f6; color: #4b5563; }
 
-        .btn-end-rental {
-            background: #fee2e2;
-            color: #ef4444;
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .btn-pay {
+            background: #d1fae5;
+            color: #047857;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-family: 'Manrope', sans-serif;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-pay:hover {
+            background: #a7f3d0;
+        }
+
+        .btn-edit {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit:hover {
+            background: #bae6fd;
+        }
+
+        .btn-out {
+            background: #fef3c7;
+            color: #d97706;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .btn-end-rental:hover {
+        .btn-out:hover {
+            background: #fde68a;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
             background: #fca5a5;
             color: #b91c1c;
         }
@@ -298,9 +382,9 @@
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/listings">Listings</a></li>
-            <li><a href="/rent" class="active">Rentals</a></li>
+            <li><a href="/rent">Rentals</a></li>
             <li><a href="/bookings">Bookings</a></li>
-            <li><a href="/tenants">Tenants</a></li>
+            <li><a href="/tenants" class="active">Tenants</a></li>
             <li><a href="/payments">Payments</a></li>
         </ul>
         <a href="{{ route('boarding-houses.create') }}" class="btn-list">
@@ -310,8 +394,14 @@
 
     <div class="page">
         <div class="page-header">
-            <h1>Rental Records</h1>
-            <p>Monitor your active renters and past rental history.</p>
+            <div class="page-header-text">
+                <h1>Tenants Directory</h1>
+                <p>Register new tenants, allocate beds, and track rent statuses.</p>
+            </div>
+            <a href="{{ route('tenants.create') }}" class="btn-add-tenant">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Add Tenant Manually
+            </a>
         </div>
 
         @if(session('success'))
@@ -336,64 +426,141 @@
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Active Tenants</span>
-                    <h2 class="stat-value">{{ $totalActive }}</h2>
+                    <h2 class="stat-value">{{ $activeTenants->count() }}</h2>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon green">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Monthly Value</span>
-                    <h2 class="stat-value">₱{{ number_format($monthlyRevenue, 0) }}</h2>
+                    <span class="stat-label text-truncate">Active Monthly Base</span>
+                    <h2 class="stat-value">₱{{ number_format($activeTenants->sum(fn($t) => $t->boardingHouse->price_per_month ?? 0), 0) }}</h2>
                 </div>
             </div>
         </div>
 
-        {{-- Active Rentals Section --}}
-        <h2 class="section-title">Active Rentals <span>{{ $activeRentals->count() }}</span></h2>
+        {{-- Active Tenants Section --}}
+        <h2 class="section-title">Active Tenants <span>{{ $activeTenants->count() }}</span></h2>
         <div class="table-container">
-            @if($activeRentals->count() > 0)
+            @if($activeTenants->count() > 0)
                 <table class="rentals-table">
                     <thead>
                         <tr>
                             <th>Tenant Details</th>
                             <th>Boarding House</th>
-                            <th>Monthly Rent</th>
-                            <th>Date Rented</th>
-                            <th>Action</th>
+                            <th>Room / Bed</th>
+                            <th>Move-In Date</th>
+                            <th>Monthly Rate</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($activeRentals as $rental)
+                        @foreach($activeTenants as $tenant)
                             <tr>
                                 <td>
                                     <div class="tenant-info">
-                                        <span class="tenant-name">{{ $rental->tenant_name }}</span>
-                                        @if($rental->tenant_email)
-                                            <span class="tenant-email">{{ $rental->tenant_email }}</span>
+                                        <span class="tenant-name">{{ $tenant->name }}</span>
+                                        @if($tenant->email)
+                                            <span class="tenant-meta">{{ $tenant->email }}</span>
                                         @endif
-                                        @if($rental->tenant_contact)
-                                            <span class="tenant-phone">{{ $rental->tenant_contact }}</span>
+                                        @if($tenant->contact)
+                                            <span class="tenant-meta">{{ $tenant->contact }}</span>
                                         @endif
                                     </div>
                                 </td>
                                 <td>
                                     <div class="house-info">
-                                        <span class="house-name">{{ $rental->boardingHouse->name ?? 'Deleted House' }}</span>
-                                        <span class="house-loc">{{ $rental->boardingHouse->location ?? '' }}, {{ $rental->boardingHouse->city->name ?? '' }}</span>
+                                        <span class="house-name">{{ $tenant->boardingHouse->name ?? 'Deleted House' }}</span>
+                                        <span class="house-loc">{{ $tenant->boardingHouse->location ?? '' }}, {{ $tenant->boardingHouse->city->name ?? '' }}</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <strong style="color: #111827; font-size: 1.05rem;">₱{{ number_format($rental->price_per_month, 0) }}/mo</strong>
+                                    <strong style="color: #374151;">{{ $tenant->room_number ?? 'Bed' }}</strong>
                                 </td>
                                 <td style="color: #4b5563; font-weight: 500;">
-                                    {{ $rental->rental_date ? $rental->rental_date->format('M d, Y h:i A') : '—' }}
+                                    {{ $tenant->move_in_date ? $tenant->move_in_date->format('M d, Y') : '—' }}
                                 </td>
                                 <td>
-                                    <form action="{{ route('rentals.end', $rental->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to end this rental and release the bed?');">
+                                    <strong style="color: #111827;">₱{{ number_format($tenant->boardingHouse->price_per_month ?? 0, 0) }}/mo</strong>
+                                </td>
+                                <td>
+                                    <div class="btn-action-group">
+                                        <a href="{{ route('payments.create', ['tenant_id' => $tenant->id]) }}" class="btn-pay">Record Rent</a>
+                                        <a href="{{ route('tenants.edit', $tenant->id) }}" class="btn-edit">Edit</a>
+                                        <form action="{{ route('tenants.move-out', $tenant->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Confirm Move-Out? This releases their occupied bed.');">
+                                            @csrf
+                                            <button type="submit" class="btn-out">Move Out</button>
+                                        </form>
+                                        <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to permanently delete this tenant?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-delete" title="Delete Permanent">&times;</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    <h3>No active tenants</h3>
+                    <p>Register new tenants manually or approve pending bookings to populate this list.</p>
+                </div>
+            @endif
+        </div>
+
+        {{-- Past Tenants History Section --}}
+        <h2 class="section-title">Past Tenancy History <span>{{ $pastTenants->count() }}</span></h2>
+        <div class="table-container">
+            @if($pastTenants->count() > 0)
+                <table class="rentals-table">
+                    <thead>
+                        <tr>
+                            <th>Tenant Details</th>
+                            <th>Boarding House</th>
+                            <th>Room / Bed</th>
+                            <th>Move-In Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pastTenants as $tenant)
+                            <tr>
+                                <td>
+                                    <div class="tenant-info">
+                                        <span class="tenant-name">{{ $tenant->name }}</span>
+                                        @if($tenant->email)
+                                            <span class="tenant-meta">{{ $tenant->email }}</span>
+                                        @endif
+                                        @if($tenant->contact)
+                                            <span class="tenant-meta">{{ $tenant->contact }}</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="house-info">
+                                        <span class="house-name">{{ $tenant->boardingHouse->name ?? 'Deleted House' }}</span>
+                                        <span class="house-loc">{{ $tenant->boardingHouse->location ?? '' }}, {{ $tenant->boardingHouse->city->name ?? '' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span style="color: #6b7280;">{{ $tenant->room_number ?? 'Bed' }}</span>
+                                </td>
+                                <td style="color: #6b7280; font-weight: 500;">
+                                    {{ $tenant->move_in_date ? $tenant->move_in_date->format('M d, Y') : '—' }}
+                                </td>
+                                <td>
+                                    <span class="badge past">Moved Out</span>
+                                </td>
+                                <td>
+                                    <form action="{{ route('tenants.destroy', $tenant->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Delete this historical tenant record? This action is permanent.');">
                                         @csrf
-                                        <button type="submit" class="btn-end-rental">End Rental</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-delete">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -402,65 +569,9 @@
                 </table>
             @else
                 <div class="empty-state">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <h3>No active rentals</h3>
-                    <p>Rentals will appear here once a room listing is rented.</p>
-                </div>
-            @endif
-        </div>
-
-        {{-- Past Rentals Section --}}
-        <h2 class="section-title">Past History <span>{{ $pastRentals->count() }}</span></h2>
-        <div class="table-container">
-            @if($pastRentals->count() > 0)
-                <table class="rentals-table">
-                    <thead>
-                        <tr>
-                            <th>Tenant Details</th>
-                            <th>Boarding House</th>
-                            <th>Rate</th>
-                            <th>Date Rented</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pastRentals as $rental)
-                            <tr>
-                                <td>
-                                    <div class="tenant-info">
-                                        <span class="tenant-name">{{ $rental->tenant_name }}</span>
-                                        @if($rental->tenant_email)
-                                            <span class="tenant-email">{{ $rental->tenant_email }}</span>
-                                        @endif
-                                        @if($rental->tenant_contact)
-                                            <span class="tenant-phone">{{ $rental->tenant_contact }}</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="house-info">
-                                        <span class="house-name">{{ $rental->boardingHouse->name ?? 'Deleted House' }}</span>
-                                        <span class="house-loc">{{ $rental->boardingHouse->location ?? '' }}, {{ $rental->boardingHouse->city->name ?? '' }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span style="color: #6b7280; font-weight: 500;">₱{{ number_format($rental->price_per_month, 0) }}/mo</span>
-                                </td>
-                                <td style="color: #6b7280; font-weight: 500;">
-                                    {{ $rental->rental_date ? $rental->rental_date->format('M d, Y') : '—' }}
-                                </td>
-                                <td>
-                                    <span class="badge ended">Ended</span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div class="empty-state">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <h3>No past records</h3>
-                    <p>Ended rental history will be archived here.</p>
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <h3>No past tenant history</h3>
+                    <p>Historical moved out tenant archives will be shown here.</p>
                 </div>
             @endif
         </div>
