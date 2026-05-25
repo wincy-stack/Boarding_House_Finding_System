@@ -359,16 +359,34 @@
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
+            <span style="font-size: 20px; font-weight: 800; color: white; margin-left: -4px;">BoardingPH</span>
         </a>
 
         <ul class="nav-links">
             <li><a href="/" class="active">Home</a></li>
             <li><a href="/listings">Listings</a></li>
-            <li><a href="/rent">Rentals</a></li>
-            <li><a href="/bookings">Bookings</a></li>
-            <li><a href="/tenants">Tenants</a></li>
-            <li><a href="/payments">Payments</a></li>
+            @auth
+                @if(auth()->user()->isAdmin())
+                    <li><a href="/rent">Rentals</a></li>
+                    <li><a href="/bookings">Bookings</a></li>
+                    <li><a href="/tenants">Tenants</a></li>
+                    <li><a href="/payments">Payments</a></li>
+                @endif
+            @endauth
         </ul>
+
+        <div class="nav-right">
+            @auth
+                <span style="color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600;">Hi, {{ auth()->user()->name }}</span>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-list" style="border: none; cursor: pointer; font-family: 'Manrope', sans-serif;">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="nav-browse">Log In</a>
+                <a href="{{ route('register') }}" class="btn-list">Register</a>
+            @endauth
+        </div>
     </nav>
 
     {{-- ─── HERO SECTION ─── --}}

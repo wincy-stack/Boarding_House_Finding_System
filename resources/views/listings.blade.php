@@ -620,20 +620,39 @@
             <svg viewBox="0 0 24 24">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
-            
+            <span style="font-size: 20px; font-weight: 800; color: white; margin-left: -4px;">BoardingPH</span>
         </a>
 
         <ul class="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/listings" class="active">Listings</a></li>
-            <li><a href="/rent">Rentals</a></li>
-            <li><a href="/bookings">Bookings</a></li>
-            <li><a href="/tenants">Tenants</a></li>
-            <li><a href="/payments">Payments</a></li>
+            @auth
+                @if(auth()->user()->isAdmin())
+                    <li><a href="/rent">Rentals</a></li>
+                    <li><a href="/bookings">Bookings</a></li>
+                    <li><a href="/tenants">Tenants</a></li>
+                    <li><a href="/payments">Payments</a></li>
+                @endif
+            @endauth
         </ul>
-        <a href="{{ route('boarding-houses.create') }}" class="btn-list">
-    +Add Boarding House
-</a>
+        
+        <div class="nav-right">
+            @auth
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ route('boarding-houses.create') }}" class="btn-list" style="margin-right: 10px;">
+                        +Add Boarding House
+                    </a>
+                @endif
+                <span style="color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600;">Hi, {{ auth()->user()->name }}</span>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-list" style="border: none; cursor: pointer; font-family: 'Manrope', sans-serif;">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="nav-browse">Log In</a>
+                <a href="{{ route('register') }}" class="btn-list">Register</a>
+            @endauth
+        </div>
     </nav>
 
     <div class="page">
@@ -747,18 +766,22 @@
                     data-availability="{{ ($house->is_available && $house->available_beds > 0) ? 'available' : 'booked' }}"
                     data-price-range="{{ $priceRange }}">
                     <img src="{{ $image }}" alt="{{ $house->name }}">
-                    <div class="card-actions">
-                        <a href="{{ route('boarding-houses.edit', $house->id) }}" class="card-action-btn btn-edit" title="Edit">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                        </a>
-                        <form action="{{ route('boarding-houses.destroy', $house->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to delete this boarding house?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="card-action-btn btn-delete" title="Delete">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                            </button>
-                        </form>
-                    </div>
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <div class="card-actions">
+                                <a href="{{ route('boarding-houses.edit', $house->id) }}" class="card-action-btn btn-edit" title="Edit">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </a>
+                                <form action="{{ route('boarding-houses.destroy', $house->id) }}" method="POST" style="margin:0;" onsubmit="return confirm('Are you sure you want to delete this boarding house?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="card-action-btn btn-delete" title="Delete">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    @endauth
                     <div class="room-card-body">
                         <div class="room-card-tags">
                             <span class="tag">{{ ucfirst($house->room_type) }}</span>
@@ -824,10 +847,18 @@
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
                     <h3 style="color: #6b7280; font-size: 1.1rem; margin-bottom: 8px;">No boarding houses yet</h3>
-                    <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">Be the first to add a listing!</p>
-                    <a href="{{ route('boarding-houses.create') }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #22c77a 0%, #16a34a 100%); color: white; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: all 0.2s;">
-                        + Add Boarding House
-                    </a>
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">Be the first to add a listing!</p>
+                            <a href="{{ route('boarding-houses.create') }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #22c77a 0%, #16a34a 100%); color: white; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.95rem; transition: all 0.2s;">
+                                + Add Boarding House
+                            </a>
+                        @else
+                            <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">Please check back later.</p>
+                        @endif
+                    @else
+                        <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">Please check back later.</p>
+                    @endauth
                 </div>
             @endforelse
         </div>
@@ -859,12 +890,12 @@
 
                 <div class="modal-form-group">
                     <label for="tenant_name">Full Name</label>
-                    <input type="text" name="tenant_name" id="tenant_name" required placeholder="Enter your full name">
+                    <input type="text" name="tenant_name" id="tenant_name" required placeholder="Enter your full name" value="{{ auth()->check() ? auth()->user()->name : '' }}">
                 </div>
 
                 <div class="modal-form-group">
                     <label for="tenant_email">Email Address</label>
-                    <input type="email" name="tenant_email" id="tenant_email" placeholder="e.g. juan@email.com">
+                    <input type="email" name="tenant_email" id="tenant_email" placeholder="e.g. juan@email.com" value="{{ auth()->check() ? auth()->user()->email : '' }}">
                 </div>
 
                 <div class="modal-form-group">

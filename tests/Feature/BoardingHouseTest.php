@@ -13,12 +13,19 @@ class BoardingHouseTest extends TestCase
 
     public function test_can_add_boarding_house_with_rating(): void
     {
+        $admin = \App\Models\User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+        ]);
+
         $city = new City();
         $city->name = 'Manila';
         $city->region = 'NCR';
         $city->save();
 
-        $response = $this->post(route('boarding-houses.store'), [
+        $response = $this->actingAs($admin)->post(route('boarding-houses.store'), [
             'city_id' => $city->id,
             'name' => 'Sunrise Boarding House',
             'description' => 'A cozy place to stay',
@@ -39,8 +46,71 @@ class BoardingHouseTest extends TestCase
         ]);
     }
 
+    public function test_guests_cannot_add_boarding_house(): void
+    {
+        $city = new City();
+        $city->name = 'Manila';
+        $city->region = 'NCR';
+        $city->save();
+
+        $response = $this->post(route('boarding-houses.store'), [
+            'city_id' => $city->id,
+            'name' => 'Sunrise Boarding House',
+            'description' => 'A cozy place to stay',
+            'location' => '123 Taft Ave',
+            'room_type' => 'single',
+            'total_beds' => 5,
+            'available_beds' => 3,
+            'size_sqm' => 15.5,
+            'price_per_month' => 3500,
+            'is_available' => 1,
+            'rating' => 4,
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_regular_users_cannot_add_boarding_house(): void
+    {
+        $user = \App\Models\User::create([
+            'name' => 'Regular User',
+            'email' => 'user@test.com',
+            'password' => bcrypt('password'),
+            'role' => 'user',
+        ]);
+
+        $city = new City();
+        $city->name = 'Manila';
+        $city->region = 'NCR';
+        $city->save();
+
+        $response = $this->actingAs($user)->post(route('boarding-houses.store'), [
+            'city_id' => $city->id,
+            'name' => 'Sunrise Boarding House',
+            'description' => 'A cozy place to stay',
+            'location' => '123 Taft Ave',
+            'room_type' => 'single',
+            'total_beds' => 5,
+            'available_beds' => 3,
+            'size_sqm' => 15.5,
+            'price_per_month' => 3500,
+            'is_available' => 1,
+            'rating' => 4,
+        ]);
+
+        $response->assertRedirect('/');
+        $response->assertSessionHas('error', 'Access denied. Admin privileges required.');
+    }
+
     public function test_can_update_boarding_house_with_rating(): void
     {
+        $admin = \App\Models\User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
+        ]);
+
         $city = new City();
         $city->name = 'Manila';
         $city->region = 'NCR';
@@ -60,7 +130,7 @@ class BoardingHouseTest extends TestCase
         $house->rating = 4;
         $house->save();
 
-        $response = $this->put(route('boarding-houses.update', $house->id), [
+        $response = $this->actingAs($admin)->put(route('boarding-houses.update', $house->id), [
             'city_id' => $city->id,
             'name' => 'Sunset Boarding House',
             'description' => 'An updated description',
